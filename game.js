@@ -118,9 +118,13 @@ let game = {
                 let style = new PIXI.TextStyle({
                     fontFamily: "Arial",
                     fontSize: 50,
-                    fill: "red",
+                    fill: "white",
                     align: 'center'
                 });
+                const background = new PIXI.Graphics();
+                background.beginFill(0, 1);
+                background.drawRect(window.innerWidth / 2 - 150, window.innerHeight / 2 - 50, 300, 100);
+                app.stage.addChild(background)
                 if (winner === -1) {
                     let message = new PIXI.Text("Circle Win", style);
                     message.anchor.set(0.5);
@@ -137,6 +141,7 @@ let game = {
                     message.position.set(window.innerWidth / 2, window.innerHeight / 2);
                     app.stage.addChild(message);
                 }
+
                 game.gameEnd = true
                 game.restartButton(app)
             }
@@ -170,20 +175,20 @@ let game = {
     restartButton: (app) => {
         const button = new PIXI.Graphics();
         button.beginFill(0, 1);
-        button.drawRect(window.innerWidth / 2 - 100, window.innerHeight / 2 + 100, 200, 50);
+        button.drawRect(window.innerWidth / 2 - 200, window.innerHeight / 2 + 100, 400, 50);
         button.interactive = true;
         button.buttonMode = true;
         let style = new PIXI.TextStyle({
             fontFamily: "Arial",
             fontSize: 50,
-            fill: "red",
+            fill: "white",
             align: 'center'
         });
         button.addListener('pointerdown', () => {
             game.restart();
         });
         app.stage.addChild(button)
-        let message = new PIXI.Text("Restart", style);
+        let message = new PIXI.Text("Press to restart", style);
         message.anchor.set(0.5);
         message.position.set(window.innerWidth / 2, window.innerHeight / 2 + 125);
         app.stage.addChild(message);
