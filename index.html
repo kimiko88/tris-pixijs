@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Tris</title>
+</head>
+
+<body>
+    <script src="../pixi.js"></script>
+    <script src="game.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0
+        }
+    </style>
+    <script type="text/javascript">
+
+        let turn = 0
+
+        let type = "WebGL"
+        if (!PIXI.utils.isWebGLSupported()) {
+            type = "canvas"
+        }
+
+        //Create a Pixi Application
+        let app = null
+        app = new PIXI.Application({
+            width: 256,
+            height: 256,
+            antialias: true,
+            transparent: false,
+            resolution: 1
+        }
+        );
+
+
+        function startApp() {
+            // for (var i = app.stage.children.length - 1; i >= 0; i--) { app.stage.removeChild(app.stage.children[i]); };
+            // Object.keys(PIXI.utils.TextureCache).forEach(function (texture) { PIXI.utils.TextureCache[texture].destroy(true); });
+            app.renderer.backgroundColor = 0x061639;
+            app.renderer.view.style.position = "absolute";
+            app.renderer.view.style.display = "block";
+            app.renderer.autoResize = true;
+            app.renderer.resize(window.innerWidth, window.innerHeight);
+
+            window.onresize = function () {
+                app.renderer.autoResize = true;
+                app.renderer.resize(window.innerWidth, window.innerHeight);
+            }
+            game.setupBoard()
+            game.setupGraphicBoard(app, 10)
+            document.body.appendChild(app.view);
+        }
+        startApp()
+    </script>
+</body>
+
+</html>
