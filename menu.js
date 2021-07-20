@@ -42,15 +42,25 @@ const menu = {
         label.position.set(window.innerWidth / 2, window.innerHeight / 2 - 4 * (window.innerHeight / 12));
         app.stage.addChild(label);
         menu.createButton(app, "Create Room", { width: window.innerWidth, height: window.innerHeight / 10, x: window.innerWidth / 2, y: window.innerHeight / 10 }, () => { menu.create(app) })
-        menu.createButton(app, "Join Room", { width: window.innerWidth, height: window.innerHeight / 10, x: window.innerWidth / 2, y: window.innerHeight / 10 + window.innerHeight / 5 }, () => { menu.join('join') })
+        menu.createButton(app, "Join Room", { width: window.innerWidth, height: window.innerHeight / 10, x: window.innerWidth / 2, y: window.innerHeight / 10 + window.innerHeight / 5 }, () => { menu.join() })
     },
 
     copyTextToClipboard: async (text) => {
+       
         try {
             await navigator.clipboard.writeText(text);
             alert('Code copied to clipboard');
         } catch (err) {
-            alert('Error in copying text: ', err);
+            const el = document.createElement('textarea')
+            el.value = text
+            el.setAttribute('readonly', '')
+            el.style.position = 'absolute'
+            el.style.left = '-9999px'
+            document.body.appendChild(el)
+            el.select()
+            document.execCommand('copy')
+            document.body.removeChild(el)
+            alert('Code copied to clipboard');
         }
     },
 
@@ -83,7 +93,7 @@ const menu = {
         });
     },
 
-    join(data) {
+    join() {
         utils.clearGraphics(app)
         input = new PIXI.TextInput({
             input: {
