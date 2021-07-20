@@ -51,7 +51,8 @@ const menu = {
             await navigator.clipboard.writeText(text);
             alert('Code copied to clipboard');
         } catch (err) {
-            const el = document.createElement('textarea')
+            const el = document.createElement('input')
+            input.type = "text";
             el.value = text
             el.setAttribute('readonly', '')
             el.style.position = 'absolute'
