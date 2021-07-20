@@ -4,12 +4,15 @@ let game = {
     gameEnd: false,
     margin: null,
     turn: 0,
+    player: null,
+    boxSize: null,
 
     setupBoard: () => {
         game.board = new Array(game.size);
         for (var i = 0; i < game.size; i++) {
             game.board[i] = new Array(game.size);
         }
+        game.boxSize = []
     },
 
     setupGraphicBoard: (app, margin = 10) => {
@@ -26,7 +29,7 @@ let game = {
     },
 
     restart: () => {
-        window.location.reload()
+        startApp()
     },
 
     drawCircle: (app, radius, start, step, x, y) => {
@@ -101,15 +104,16 @@ let game = {
         return undefined
     },
 
-    onClick: (boxNum, x, y) => {
+    opponentMove: (app, boxNum) => {
+        console.log(boxNum)
         let maxsize = window.innerWidth > window.innerHeight ? window.innerWidth : window.innerHeight
         let radius = ((maxsize) / 3.0 - game.margin) / 6.0
         if (game.board[parseInt(boxNum / 3)][boxNum % 3] === undefined && !game.gameEnd) {
             if (game.turn === 0) {
-                game.drawCircle(app, radius, 0.1, 0.01, x, y)
+                game.drawCircle(app, radius, 0.1, 0.01, game.boxSize[boxNum].x, game.boxSize[boxNum].y)
                 game.board[parseInt(boxNum / 3)][boxNum % 3] = -1
             } else {
-                game.drawCross(app, radius, 0.1, 0.01, x, y)
+                game.drawCross(app, radius, 0.1, 0.01, game.boxSize[boxNum].x, game.boxSize[boxNum].y)
                 game.board[parseInt(boxNum / 3)][boxNum % 3] = 1
             }
             game.turn = ++game.turn % 2
@@ -145,7 +149,55 @@ let game = {
                 game.gameEnd = true
                 game.restartButton(app)
             }
-            console.log(boxNum)
+        }
+    },
+
+    onClick: (boxNum, x, y) => {
+        let maxsize = window.innerWidth > window.innerHeight ? window.innerWidth : window.innerHeight
+        let radius = ((maxsize) / 3.0 - game.margin) / 6.0
+        if (game.board[parseInt(boxNum / 3)][boxNum % 3] === undefined && !game.gameEnd && game.player === game.turn) {
+            if (game.turn === 0) {
+                game.drawCircle(app, radius, 0.1, 0.01, x, y)
+                socket.emit('move', { b: boxNum });
+                game.board[parseInt(boxNum / 3)][boxNum % 3] = -1
+            } else {
+                game.drawCross(app, radius, 0.1, 0.01, x, y)
+                socket.emit('move', { b: boxNum });
+                game.board[parseInt(boxNum / 3)][boxNum % 3] = 1
+            }
+            game.turn = ++game.turn % 2
+            let winner = game.checkWin()
+            if (winner !== undefined) {
+                let style = new PIXI.TextStyle({
+                    fontFamily: "Arial",
+                    fontSize: 50,
+                    fill: "white",
+                    align: 'center'
+                });
+                const background = new PIXI.Graphics();
+                background.beginFill(0, 1);
+                background.drawRect(window.innerWidth / 2 - 150, window.innerHeight / 2 - 50, 300, 100);
+                app.stage.addChild(background)
+                if (winner === -1) {
+                    let message = new PIXI.Text("Circle Win", style);
+                    message.anchor.set(0.5);
+                    message.position.set(window.innerWidth / 2, window.innerHeight / 2);
+                    app.stage.addChild(message);
+                } else if (winner === 1) {
+                    let message = new PIXI.Text("Cross Win", style);
+                    message.anchor.set(0.5);
+                    message.position.set(window.innerWidth / 2, window.innerHeight / 2);
+                    app.stage.addChild(message);
+                } else {
+                    let message = new PIXI.Text("Draw", style);
+                    message.anchor.set(0.5);
+                    message.position.set(window.innerWidth / 2, window.innerHeight / 2);
+                    app.stage.addChild(message);
+                }
+
+                game.gameEnd = true
+                game.restartButton(app)
+            }
         }
     },
 
@@ -166,9 +218,8 @@ let game = {
         sprite.buttonMode = true;
         sprite.x = x;
         sprite.y = y;
+        game.boxSize.push({ x: x, y: y })
         sprite.on('pointerdown', () => game.onClick(boxNum, x, y));
-
-
         return sprite
     },
 
