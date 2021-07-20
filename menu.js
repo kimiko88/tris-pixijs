@@ -46,20 +46,12 @@ const menu = {
     },
 
     copyTextToClipboard: async (text) => {
-       
+
         try {
             await navigator.clipboard.writeText(text);
             alert('Code copied to clipboard');
         } catch (err) {
-            const el = document.createElement('input')
-            el.type = "text";
-            el.value = text
-            document.body.appendChild(el)
-            el.select()
-            el.setSelectionRange(0, 99999); /* For mobile devices */
-            document.execCommand('copy')
-           // document.body.removeChild(el)
-            alert('Code copied to clipboard321');
+            alert('Copy code: ' + text);
         }
     },
 
