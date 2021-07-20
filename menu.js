@@ -46,7 +46,6 @@ const menu = {
     },
 
     copyTextToClipboard: async (text) => {
-
         try {
             await navigator.clipboard.writeText(text);
             alert('Code copied to clipboard');
@@ -55,33 +54,9 @@ const menu = {
         }
     },
 
-    create(app) {
+    create() {
         socket.connect();
         socket.emit('create');
-        socket.on('code', function (data) {
-            utils.clearGraphics(app)
-            const button = new PIXI.Graphics();
-            button.beginFill(0, 1);
-            button.drawRect(0, window.innerHeight / 2 - (window.innerHeight / 24), window.innerWidth, window.innerHeight / 12);
-            app.stage.addChild(button)
-            let min = window.innerHeight < window.innerWidth ? window.innerHeight : window.innerWidth
-            let style = new PIXI.TextStyle({
-                fontFamily: "Arial",
-                fontSize: min / 12,
-                fill: "white",
-                align: 'center'
-            });
-            let label = new PIXI.Text('CODE:', style);
-            label.anchor.set(0.5);
-            label.position.set(window.innerWidth / 2, window.innerHeight / 2 - (window.innerHeight / 12));
-            app.stage.addChild(label);
-            let message = new PIXI.Text(data.id, style);
-            message.anchor.set(0.5);
-            message.position.set(window.innerWidth / 2, window.innerHeight / 2);
-            app.stage.addChild(message);
-            menu.copyTextToClipboard(data.id)
-            // console.log(data.id)
-        });
     },
 
     join() {

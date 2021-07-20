@@ -29,6 +29,7 @@ let game = {
     },
 
     restart: () => {
+        socket.disconnect();
         startApp()
     },
 
