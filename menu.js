@@ -59,7 +59,7 @@ const menu = {
             el.setSelectionRange(0, 99999); /* For mobile devices */
             document.execCommand('copy')
             document.body.removeChild(el)
-            alert('Code copied to clipboard');
+            alert('Code copied to clipboard321');
         }
     },
 
