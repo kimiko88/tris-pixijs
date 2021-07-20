@@ -122,7 +122,7 @@
                 fill: "white",
                 align: 'center'
             });
-            let message = new PIXI.Text(data.message, style);
+            let message = new PIXI.Text("Timeout disconnection", style);
             message.anchor.set(0.5);
             message.position.set(window.innerWidth / 2, window.innerHeight / 2);
             app.stage.addChild(message);
