@@ -55,7 +55,6 @@
             message.position.set(window.innerWidth / 2, window.innerHeight / 2);
             app.stage.addChild(message);
             menu.copyTextToClipboard(data.id)
-            // console.log(data.id)
         });
         socket.on('roomfull', function (data) {
             const button = new PIXI.Graphics();
@@ -92,6 +91,20 @@
             label.position.set(window.innerWidth / 2, window.innerHeight / 2 + 3 * (window.innerHeight / 12) + window.innerHeight / 24);
             app.stage.addChild(label);
         });
+        socket.on('disconnectionError', function (data) {
+            game.gameEnd = true
+            let style = new PIXI.TextStyle({
+                fontFamily: "Arial",
+                fontSize: 50,
+                fill: "white",
+                align: 'center'
+            });
+            let message = new PIXI.Text(data.message, style);
+            message.anchor.set(0.5);
+            message.position.set(window.innerWidth / 2, window.innerHeight / 2);
+            app.stage.addChild(message);
+            game.restartButton(app)
+        })
         socket.on('error', console.error.bind(console));
         socket.on('message', console.log.bind(console));
         socket.on('moved', function (data) {
@@ -102,7 +115,18 @@
         });
 
         socket.on("disconnect", () => {
-            console.log(socket.connected); // false
+            game.gameEnd = true
+            let style = new PIXI.TextStyle({
+                fontFamily: "Arial",
+                fontSize: 50,
+                fill: "white",
+                align: 'center'
+            });
+            let message = new PIXI.Text(data.message, style);
+            message.anchor.set(0.5);
+            message.position.set(window.innerWidth / 2, window.innerHeight / 2);
+            app.stage.addChild(message);
+            game.restartButton(app)
         });
         let turn = 0
 
