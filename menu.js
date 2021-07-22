@@ -77,7 +77,7 @@ const menu = {
 
         input.placeholder = 'Enter your Text...'
         input.x = window.innerWidth / 2
-        input.y = window.innerHeight / 2
+        input.y = 50
         input.pivot.x = input.width / 2
         input.pivot.y = input.height / 2
         app.stage.addChild(input)
@@ -89,7 +89,7 @@ const menu = {
     joinButton: (app, input) => {
         const button = new PIXI.Graphics();
         button.beginFill(0, 1);
-        button.drawRect(window.innerWidth / 2 - 200, window.innerHeight / 2 + 100, 400, 50);
+        button.drawRect(window.innerWidth / 2 - 200, 200, 400, 50);
         button.interactive = true;
         button.buttonMode = true;
         let style = new PIXI.TextStyle({
@@ -104,7 +104,7 @@ const menu = {
         app.stage.addChild(button)
         let message = new PIXI.Text("Join room", style);
         message.anchor.set(0.5);
-        message.position.set(window.innerWidth / 2, window.innerHeight / 2 + 125);
+        message.position.set(window.innerWidth / 2, 225);
         app.stage.addChild(message);
     }
 

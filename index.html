@@ -59,7 +59,7 @@
         socket.on('roomfull', function (data) {
             const button = new PIXI.Graphics();
             button.beginFill(0, 1);
-            button.drawRect(0, window.innerHeight / 2 + 3 * (window.innerHeight / 12), window.innerWidth, window.innerHeight / 12);
+            button.drawRect(0, 100, window.innerWidth, window.innerHeight / 12);
             app.stage.addChild(button)
             let min = window.innerHeight < window.innerWidth ? window.innerHeight : window.innerWidth
             let style = new PIXI.TextStyle({
@@ -70,14 +70,14 @@
             });
             let label = new PIXI.Text('Room is full', style);
             label.anchor.set(0.5);
-            label.position.set(window.innerWidth / 2, window.innerHeight / 2 + 3 * (window.innerHeight / 12) + window.innerHeight / 24);
+            label.position.set(window.innerWidth / 2, 145);
             app.stage.addChild(label);
         });
 
         socket.on('invalid', function (data) {
             const button = new PIXI.Graphics();
             button.beginFill(0, 1);
-            button.drawRect(0, window.innerHeight / 2 + 3 * (window.innerHeight / 12), window.innerWidth, window.innerHeight / 12);
+            button.drawRect(0, 100, window.innerWidth, window.innerHeight / 12);
             app.stage.addChild(button)
             let min = window.innerHeight < window.innerWidth ? window.innerHeight : window.innerWidth
             let style = new PIXI.TextStyle({
@@ -88,7 +88,7 @@
             });
             let label = new PIXI.Text('Invalid token', style);
             label.anchor.set(0.5);
-            label.position.set(window.innerWidth / 2, window.innerHeight / 2 + 3 * (window.innerHeight / 12) + window.innerHeight / 24);
+            label.position.set(window.innerWidth / 2,145);
             app.stage.addChild(label);
         });
         socket.on('disconnectionError', function (data) {
